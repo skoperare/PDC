@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDC 2026 — Rankings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --bg:#0a1628;
+  --bg2:#0d1e38;
+  --bg3:#102448;
+  --bg4:#132d58;
+  --red:#c8102e;
+  --red2:#e01535;
+  --b1:#3b82f6;
+  --b2:#60a5fa;
+  --b3:#93c5fd;
+  --b4:#bfdbfe;
+  --bd:#1a3356;
+  --bd2:#1e4070;
+  --bd3:#254d8a;
+  --t1:#dce8f8;
+  --t2:#90b4d8;
+  --t3:#4a72a0;
+  --t4:#2a4a70;
+  --white:#fff;
+  --font:'Barlow',sans-serif;
+  --fc:'Barlow Condensed',sans-serif;
+}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);font-size:14px;min-height:100vh}
+.stripe{height:4px;background:var(--red)}
+/* HEADER */
+.hdr{background:#060e1c;border-bottom:1px solid var(--bd);display:flex;align-items:center;position:sticky;top:0;z-index:100;height:56px}
+.logo{display:flex;align-items:center;gap:0;padding:0 14px;border-right:1px solid var(--bd);height:100%;flex-shrink:0}
+.logo-icon{font-size:22px}
+.logo-txt{font-family:var(--fc);font-size:22px;font-weight:800;color:var(--white);letter-spacing:1px}
+.logo-yr{font-family:var(--fc);font-size:13px;font-weight:700;color:var(--red);margin-left:4px}
+.nav{display:flex;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav::-webkit-scrollbar{display:none}
+.nb{background:none;border:none;font-family:var(--font);font-size:13px;font-weight:700;color:var(--t2);padding:0 12px;height:56px;cursor:pointer;white-space:nowrap;text-transform:uppercase;letter-spacing:.05em;border-bottom:3px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
+.nb:hover{color:var(--white)}
+.nb.active{color:var(--white);border-bottom-color:var(--red)}
+/* HERO */
+.hero{background:linear-gradient(to right,#060e1c,var(--bg4));border-bottom:1px solid var(--bd);padding:16px 24px;display:flex;align-items:center;justify-content:center}
+.hero-t{font-family:var(--fc);font-size:32px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:2px;line-height:1;text-align:center}
+.hero-t span{color:var(--white)}
+
+/* CONTAINER */
+.wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
+/* PAGES */
+.pg{display:none;animation:fi .18s ease}
+.pg.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+/* SECTION HEADER */
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:12px;margin-top:28px}
+.sh:first-child{margin-top:0}
+.sh-t{font-family:var(--fc);font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);white-space:nowrap}
+.sh-l{flex:1;height:1px;background:var(--bd)}
+.sh-b{font-family:var(--fc);font-size:12px;font-weight:700;color:var(--t3);white-space:nowrap}
+/* TABLE */
+.tw{background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:6px;overflow:hidden;margin-bottom:28px}
+.tw-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw-scroll table{min-width:700px}
+table{width:100%;border-collapse:collapse}
+thead tr{background:rgba(0,0,0,.5)}
+thead th{padding:10px 14px;font-family:var(--fc);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);text-align:left;border-bottom:1px solid var(--bd)}
+th.r{text-align:right} th.c{text-align:center}
+tbody tr{border-bottom:1px solid rgba(255,255,255,.03);transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.04)}
+tbody tr.alt{background:rgba(255,255,255,.02)}
+tbody tr.alt:hover{background:rgba(255,255,255,.05)}
+td{padding:10px 14px;font-size:13px;color:var(--white);vertical-align:middle}
+td.r{text-align:right} td.c{text-align:center}
+td.nm{font-weight:700;color:var(--white);font-size:14px}
+td.dim{color:var(--t2);font-style:normal;text-transform:uppercase}
+td.zero{color:var(--t3);font-style:normal;text-transform:uppercase}
+/* RANK BADGE — hexagon */
+.rb{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;font-family:var(--fc);font-size:14px;font-weight:800;position:relative;flex-shrink:0}
+.rb svg{position:absolute;top:0;left:0;width:100%;height:100%}
+.rb span{position:relative;z-index:1}
+.rb1 span{color:#bfdbfe}
+.rb2 span{color:#93c5fd}
+.rb3 span{color:#60a5fa}
+.rbn span{color:var(--t3)}
+/* BAR */
+.bw{display:flex;align-items:center;gap:8px}
+.bt{flex:1;height:5px;background:var(--bd);border-radius:3px;overflow:hidden;max-width:120px}
+.bf{height:100%;border-radius:3px}
+/* EMPTY STATE */
+.empty{padding:40px 20px;text-align:center}
+.empty-t{font-family:var(--fc);font-size:28px;font-weight:800;color:var(--bd2);margin-bottom:8px}
+.empty-s{font-size:13px;color:var(--t3)}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+</style>
+</head>
+<body>
+<div class="stripe"></div>
+<header class="hdr">
+  <div class="logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 185 52" height="34" aria-label="PDC">
+      <text x="0" y="46" font-family="'Barlow Condensed',Arial Narrow,sans-serif" font-weight="900" font-size="54" fill="white" letter-spacing="2">PDC</text>
+    </svg>
+    <span style="font-family:var(--fc);font-size:15px;font-weight:700;color:var(--t2);letter-spacing:1px;margin-left:4px">2026</span>
+  </div>
+  <nav class="nav" id="main-nav">
+    <button class="nb active" onclick="show('world')">World Ranking</button>
+    <button class="nb"        onclick="show('points')">Points Ranking</button>
+    <button class="nb"        onclick="show('protour')">Pro Tour</button>
+    <button class="nb"        onclick="show('wseries')">World Series</button>
+    <button class="nb"        onclick="show('premier')">Premier League</button>
+    <button class="nb"        onclick="show('euro')">European Tour</button>
+    <button class="nb"        onclick="show('pc')">Players Championship</button>
+    <button class="nb"        onclick="show('challenge')">Challenge</button>
+  </nav>
+</header>
+<div class="hero">
+  <div class="hero-t" id="ht">RANKING</div>
+</div>
+<div class="wrap">
+  <div id="pg-world"    class="pg on"><div class="sh"><div class="sh-l"></div><div class="sh-t">Overall Rankings — Order of Merit 2026</div><div class="sh-l"></div></div><div class="tw"><table id="t-world"></table></div></div>
+  <div id="pg-points"   class="pg"><div class="sh"><div class="sh-l"></div><div class="sh-t">Points Ranking</div><div class="sh-l"></div></div><div class="tw"><table id="t-points"></table></div></div>
+  <div id="pg-protour"  class="pg"><div class="sh"><div class="sh-l"></div><div class="sh-t">Pro Tour Rankings</div><div class="sh-l"></div></div><div class="tw"><table id="t-protour"></table></div></div>
+  <div id="pg-wseries"  class="pg"><div class="sh"><div class="sh-l"></div><div class="sh-t">World Series Rankings</div><div class="sh-l"></div></div><div class="tw"><table id="t-wseries"></table></div></div>
+  <div id="pg-premier"  class="pg"><div class="sh"><div class="sh-l"></div><div class="sh-t">Premier League</div><div class="sh-l"></div></div><div class="tw"><table id="t-premier"></table></div></div>
+  <div id="pg-euro"     class="pg"><div class="sh"><div class="sh-l"></div><div class="sh-t">European Tour Rankings</div><div class="sh-l"></div></div><div class="tw"><table id="t-euro"></table></div></div>
+  <div id="pg-pc"       class="pg"><div class="sh"><div class="sh-l"></div><div class="sh-t">Players Championship Rankings</div><div class="sh-l"></div></div><div class="tw"><table id="t-pc"></table></div></div>
+  <div id="pg-challenge" class="pg">
+    <div class="sh"><div class="sh-l"></div><div class="sh-t">Samurai Challenge</div><div class="sh-l"></div></div>
+    <div class="tw"><table id="t-challenge"></table></div>
+    <div class="sh"><div class="sh-l"></div><div class="sh-t">Local Match Wins</div><div class="sh-l"></div></div>
+    <div class="tw"><table id="t-localmw"></table></div>
+    <div class="sh"><div class="sh-l"></div><div class="sh-t">PDC Match Wins</div><div class="sh-l"></div></div>
+    <div class="tw"><table id="t-pdcmw"></table></div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   PRIZE / POINTS STRUCTURES
+═══════════════════════════════════════ */
+const PC_PRIZE = {W:10000, F:5000,  SF:3000, QF:1500};
+const ET_PRIZE = {W:15000, F:7500,  SF:4000, QF:2000};
+const PC_PTS   = {W:250,   F:150,   SF:90,   QF:50};
+const ET_PTS   = {W:500,   F:300,   SF:180,  QF:100};
+
+/* ═══════════════════════════════════════
+   BRACKET DATA
+   All player names UPPERCASED and normalised.
+   Ross Smith = 'ROSS SMITH', Michael Smith = 'MICHAEL SMITH'
+═══════════════════════════════════════ */
+const ET = [
+  { name:'Poland Open', rounds:[
+    {m:[{a:'LITTLER',sa:0,b:'ROCK',sb:1},{a:'DOBEY',sa:0,b:'MICHAEL SMITH',sb:1},{a:'NIJMAN',sa:1,b:'VAN VEEN',sb:0},{a:'BUNTING',sa:0,b:'HUMPHRIES',sb:1}]},
+    {m:[{a:'MICHAEL SMITH',sa:2,b:'ROCK',sb:0},{a:'NIJMAN',sa:1,b:'HUMPHRIES',sb:2}]},
+    {m:[{a:'MICHAEL SMITH',sa:2,b:'HUMPHRIES',sb:3}]}
+  ]},
+  { name:'Germany Tour', rounds:[
+    {m:[{a:'PRICE',sa:1,b:'VAN DUIJVENBODE',sb:0},{a:'ROSS SMITH',sa:1,b:'HETA',sb:0},{a:'NIJMAN',sa:1,b:'ROCK',sb:0},{a:'SEARLE',sa:1,b:'ZONNEVELD',sb:0}]},
+    {m:[{a:'PRICE',sa:0,b:'ROSS SMITH',sb:2},{a:'SEARLE',sa:2,b:'NIJMAN',sb:0}]},
+    {m:[{a:'ROSS SMITH',sa:1,b:'SEARLE',sb:3}]}
+  ]},
+  { name:'Belgium Open', rounds:[
+    {m:[{a:'NOPPERT',sa:1,b:'ZONNEVELD',sb:0},{a:'CLAYTON',sa:1,b:'SCHINDLER',sb:0},{a:'HUMPHRIES',sa:1,b:'DOBEY',sb:0},{a:'ASPINALL',sa:1,b:'VAN GERWEN',sb:0}]},
+    {m:[{a:'CLAYTON',sa:2,b:'NOPPERT',sb:0},{a:'ASPINALL',sa:2,b:'HUMPHRIES',sb:1}]},
+    {m:[{a:'CLAYTON',sa:3,b:'ASPINALL',sb:2}]}
+  ]},
+  { name:'Munich Tour', rounds:[
+    {m:[{a:'GILDING',sa:0,b:'ASPINALL',sb:1},{a:'DOETS',sa:0,b:'ZONNEVELD',sb:1},{a:'ROSS SMITH',sa:1,b:'RATAJSKI',sb:0},{a:'CLAYTON',sa:0,b:'NOPPERT',sb:1}]},
+    {m:[{a:'ASPINALL',sa:2,b:'ZONNEVELD',sb:1},{a:'NOPPERT',sa:2,b:'ROSS SMITH',sb:1}]},
+    {m:[{a:'ASPINALL',sa:3,b:'NOPPERT',sb:2}]}
+  ]},
+  { name:'Stuttgart Tour', rounds:[
+    {m:[{a:'SCHINDLER',sa:1,b:'PRICE',sb:0},{a:'NIJMAN',sa:0,b:'VAN GERWEN',sb:1},{a:'ASPINALL',sa:0,b:'ROSS SMITH',sb:1},{a:'RATAJSKI',sa:0,b:'NOPPERT',sb:1}]},
+    {m:[{a:'SCHINDLER',sa:2,b:'VAN GERWEN',sb:1},{a:'NOPPERT',sa:0,b:'ROSS SMITH',sb:2}]},
+    {m:[{a:'SCHINDLER',sa:1,b:'ROSS SMITH',sb:3}]}
+  ]},
+];
+
+const PC = [
+  { name:'Players Championship 01', rounds:[
+    {m:[{a:'SULJOVIC',sa:0,b:'WOODHOUSE',sb:1},{a:'WADE',sa:0,b:'DE DECKER',sb:1},{a:'LEWIS',sa:0,b:'MICHAEL SMITH',sb:1},{a:'DOBEY',sa:1,b:'VAN VEEN',sb:0}]},
+    {m:[{a:'WOODHOUSE',sa:0,b:'DE DECKER',sb:1},{a:'DOBEY',sa:0,b:'MICHAEL SMITH',sb:1}]},
+    {m:[{a:'MICHAEL SMITH',sa:1,b:'DE DECKER',sb:0}]}
+  ]},
+  { name:'Players Championship 02', rounds:[
+    {m:[{a:'SEARLE',sa:1,b:'MENZIES',sb:0},{a:'CLAYTON',sa:1,b:'ROCK',sb:0},{a:'ZONNEVELD',sa:0,b:'HUMPHRIES',sb:1},{a:'RATAJSKI',sa:0,b:'VAN DUIJVENBODE',sb:1}]},
+    {m:[{a:'SEARLE',sa:0,b:'HUMPHRIES',sb:1},{a:'CLAYTON',sa:0,b:'VAN DUIJVENBODE',sb:1}]},
+    {m:[{a:'HUMPHRIES',sa:1,b:'VAN DUIJVENBODE',sb:0}]}
+  ]},
+  { name:'Players Championship 03', rounds:[
+    {m:[{a:'PRICE',sa:1,b:'CLEMENS',sb:0},{a:'CROSS',sa:0,b:'WATTIMENA',sb:1},{a:'CULLEN',sa:1,b:'NOPPERT',sb:0},{a:'WHITLOCK',sa:0,b:'PIETRECZKO',sb:1}]},
+    {m:[{a:'PRICE',sa:0,b:'PIETRECZKO',sb:1},{a:'CULLEN',sa:0,b:'WATTIMENA',sb:1}]},
+    {m:[{a:'WATTIMENA',sa:0,b:'PIETRECZKO',sb:1}]}
+  ]},
+  { name:'Players Championship 04', rounds:[
+    {m:[{a:'BUNTING',sa:1,b:'NIJMAN',sb:0},{a:'CHISNALL',sa:0,b:'LITTLER',sb:1},{a:'SCHINDLER',sa:0,b:'VAN GERWEN',sb:1},{a:'WRIGHT',sa:0,b:'DOETS',sb:1}]},
+    {m:[{a:'LITTLER',sa:0,b:'BUNTING',sb:1},{a:'DOETS',sa:1,b:'VAN GERWEN',sb:0}]},
+    {m:[{a:'BUNTING',sa:1,b:'DOETS',sb:0}]}
+  ]},
+  { name:'Players Championship 05', rounds:[
+    {m:[{a:'ROSS SMITH',sa:1,b:'VAN BARNEVELD',sb:0},{a:'GILDING',sa:0,b:'VAN DEN BERGH',sb:1},{a:'GURNEY',sa:0,b:'ANDERSON',sb:1},{a:'ASPINALL',sa:1,b:'HETA',sb:0}]},
+    {m:[{a:'ROSS SMITH',sa:1,b:'VAN DEN BERGH',sb:0},{a:'ASPINALL',sa:1,b:'ANDERSON',sb:0}]},
+    {m:[{a:'ROSS SMITH',sa:0,b:'ASPINALL',sb:1}]}
+  ]},
+  { name:'Players Championship 06', rounds:[
+    {m:[{a:'NIJMAN',sa:1,b:'HUMPHRIES',sb:0},{a:'BUNTING',sa:0,b:'PIETRECZKO',sb:1},{a:'CLAYTON',sa:1,b:'VAN DUIJVENBODE',sb:0},{a:'SULJOVIC',sa:0,b:'WATTIMENA',sb:1}]},
+    {m:[{a:'NIJMAN',sa:0,b:'PIETRECZKO',sb:1},{a:'CLAYTON',sa:1,b:'WATTIMENA',sb:0}]},
+    {m:[{a:'CLAYTON',sa:1,b:'PIETRECZKO',sb:0}]}
+  ]},
+];
+
+const CH = [
+  { name:'Samurai Challenge 01', rounds:[
+    {m:[{a:'STEFANO',sa:1,b:'OSCAR',sb:0},{a:'DANIELE',sa:1,b:'ALESSANDRO',sb:0}]},
+    {m:[{a:'STEFANO',sa:1,b:'DANIELE',sb:0},{a:'OSCAR',sa:0,b:'ALESSANDRO',sb:1}]},
+    {m:[{a:'DANIELE',sa:1,b:'OSCAR',sb:0},{a:'STEFANO',sa:0,b:'ALESSANDRO',sb:1}]},
+    {m:[{a:'DANIELE',sa:1,b:'STEFANO',sb:0}]},
+    {m:[{a:'DANIELE',sa:2,b:'ALESSANDRO',sb:1}]}
+  ]},
+  { name:'Samurai Challenge 02', rounds:[
+    {m:[{a:'DANIELE',sa:0,b:'LUCA',sb:1},{a:'STEFANO',sa:0,b:'DANIELE',sb:1}]},
+    {m:[{a:'STEFANO',sa:0,b:'LUCA',sb:1}]},
+    {m:[{a:'DANIELE',sa:1,b:'LUCA',sb:0}]}
+  ]},
+];
+
+const MATCH_WINS = [
+  ['ASPINALL',8],['CLAYTON',7],['HUMPHRIES',7],['ROSS SMITH',7],
+  ['MICHAEL SMITH',6],['PIETRECZKO',5],['SEARLE',4],['NOPPERT',4],
+  ['BUNTING',3],['WATTIMENA',3],['NIJMAN',3],
+  ['DE DECKER',2],['VAN DUIJVENBODE',2],['DOETS',2],['PRICE',2],
+  ['SCHINDLER',2],['VAN GERWEN',2],
+  ['DOBEY',1],['WOODHOUSE',1],['CULLEN',1],['LITTLER',1],
+  ['ANDERSON',1],['VAN DEN BERGH',1],['ROCK',1],['ZONNEVELD',1],
+  ['WADE',0],['LEWIS',0],['VAN VEEN',0],['SULJOVIC',0],
+  ['MENZIES',0],['RATAJSKI',0],['WHITLOCK',0],['CROSS',0],
+  ['CLEMENS',0],['WRIGHT',0],['CHISNALL',0],['VAN BARNEVELD',0],
+  ['GILDING',0],['GURNEY',0],['HETA',0],
+];
+const LOCAL_MW = [['DANIELE',7],['ALESSANDRO',2],['STEFANO',2],['LUCA',1],['OSCAR',0]];
+
+/* ═══════════════════════════════════════
+   CALC ENGINE
+   3-round bracket: R0=QF(losers→QF pts), R1=SF(losers→SF pts), R2=Final(loser→F, winner→W)
+═══════════════════════════════════════ */
+function calc(brackets, map) {
+  const out = {};
+  function add(p, v) { out[p] = (out[p]||0) + v; }
+  brackets.forEach(t => {
+    const R = t.rounds, N = R.length;
+    R.forEach((round, ri) => {
+      const isF  = ri === N - 1;
+      const isSF = ri === N - 2;
+      round.m.forEach(({a,sa,b,sb}) => {
+        const W = sa > sb ? a : b;
+        const L = sa > sb ? b : a;
+        if      (isF)  { add(W, map.W); add(L, map.F); }
+        else if (isSF) { add(L, map.SF); }
+        else           { add(L, map.QF); }
+      });
+    });
+  });
+  return out;
+}
+
+function merge(...maps) {
+  const out = {};
+  maps.forEach(m => Object.entries(m).forEach(([k,v]) => { out[k]=(out[k]||0)+v; }));
+  return out;
+}
+
+/* ═══════════════════════════════════════
+   COMPUTED RANKINGS
+═══════════════════════════════════════ */
+const etPrize  = calc(ET, ET_PRIZE);
+const pcPrize  = calc(PC, PC_PRIZE);
+const etPts    = calc(ET, ET_PTS);
+const pcPts    = calc(PC, PC_PTS);
+
+const worldRanking  = merge(etPrize, pcPrize);  // prize money total
+const proTourRanking = merge(etPrize, pcPrize);  // same as world for now
+const pointsRanking  = merge(etPts, pcPts);      // points total
+
+/* ═══════════════════════════════════════
+   RENDER HELPERS
+═══════════════════════════════════════ */
+function tc(s){ return s.toUpperCase(); }
+function gbp(n){ return n ? '£'+n.toLocaleString('en-GB') : '—'; }
+function rk(i){
+  const configs = [
+    {stroke:'rgba(59,130,246,.9)', fill:'rgba(59,130,246,.18)'},
+    {stroke:'rgba(59,130,246,.6)', fill:'rgba(59,130,246,.10)'},
+    {stroke:'rgba(59,130,246,.4)', fill:'rgba(59,130,246,.07)'},
+    {stroke:'rgba(255,255,255,.1)', fill:'rgba(255,255,255,.03)'},
+  ];
+  const c = i < 3 ? configs[i] : configs[3];
+  const cls = i===0?'rb1':i===1?'rb2':i===2?'rb3':'rbn';
+  // Hexagon points for 32x32 viewBox
+  return `<div class="rb ${cls}">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="16,2 28,9 28,23 16,30 4,23 4,9" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>
+    </svg>
+    <span>${i+1}</span>
+  </div>`;
+}
+
+function barCell(val, max, color, label) {
+  const pct = max > 0 ? Math.round(val/max*100) : 0;
+  return `<td><div class="bw" style="justify-content:flex-end">
+    <div class="bt"><div class="bf" style="width:${pct}%;background:${color}"></div></div>
+    <span style="font-family:var(--fc);font-size:15px;font-weight:800;color:${color};min-width:80px;text-align:right">${label}</span>
+  </div></td>`;
+}
+
+/* Prize ranking table */
+function prizeTable(id, data, col='Earnings', color='var(--b2)') {
+  const rows = Object.entries(data).sort((a,b)=>b[1]-a[1]).filter(([,v])=>v>0);
+  const max  = rows.length ? rows[0][1] : 1;
+  document.getElementById(id).innerHTML = rows.length ? `
+    <thead><tr><th class="c" style="width:56px">Rank</th><th>Player</th><th class="r">${col}</th></tr></thead>
+    <tbody>${rows.map(([n,v],i)=>`<tr class="${i%2?'alt':''}"><td class="c">${rk(i)}</td><td class="nm">${tc(n)}</td>${barCell(v,max,color,gbp(v))}</tr>`).join('')}</tbody>`
+    : `<tbody><tr><td colspan="3"><div class="empty"><div class="empty-t">NO DATA YET</div><div class="empty-s">Results will appear once tournaments are played</div></div></td></tr></tbody>`;
+}
+
+/* Points ranking table with W/F/SF/QF/Win%/Wins/TotalPoints */
+function pointsTable(id) {
+  const tW={},tF={},tSF={},tQF={};
+  function add(map,p){map[p]=(map[p]||0)+1;}
+  [...ET,...PC].forEach(t=>{
+    const R=t.rounds,N=R.length;
+    R.forEach((round,ri)=>{
+      const isF=ri===N-1,isSF=ri===N-2;
+      round.m.forEach(({a,sa,b,sb})=>{
+        const W=sa>sb?a:b,L=sa>sb?b:a;
+        if(isF){add(tW,W);add(tF,L);}
+        else if(isSF){add(tSF,L);}
+        else{add(tQF,L);}
+      });
+    });
+  });
+  const mwMap={};
+  MATCH_WINS.forEach(([n,v])=>{mwMap[n]=v;});
+  const all={};
+  Object.keys(pointsRanking).forEach(p=>{all[p]=true;});
+  MATCH_WINS.forEach(([n])=>{all[n]=true;});
+  const rows=Object.keys(all).map(p=>({
+    name:p,w:tW[p]||0,f:tF[p]||0,sf:tSF[p]||0,qf:tQF[p]||0,
+    mw:mwMap[p]||0,tot:pointsRanking[p]||0,
+  })).sort((a,b)=>b.tot-a.tot||b.mw-a.mw).filter(r=>r.tot>0||r.mw>0||r.w>0);
+  const maxPts=rows.length?rows[0].tot:1;
+  const maxMW=rows.length?Math.max(...rows.map(r=>r.mw)):1;
+  const col=(v,c)=>v?`<span style="font-family:var(--fc);font-size:15px;font-weight:700;color:${c}">${v}</span>`:`<span style="color:var(--t4)">—</span>`;
+  document.getElementById(id).innerHTML=`
+    <thead><tr>
+      <th class="c" style="width:48px">Rank</th>
+      <th>Player</th>
+      <th class="c" style="width:48px">W</th>
+      <th class="c" style="width:48px">F</th>
+      <th class="c" style="width:48px">SF</th>
+      <th class="c" style="width:48px">QF</th>
+      <th class="c" style="width:48px">%</th>
+      <th class="c" style="width:70px">Wins</th>
+      <th class="c" style="width:70px">Total</th>
+    </tr></thead>
+    <tbody>${rows.map(({name,w,f,sf,qf,mw,tot},i)=>{
+      const played=w+f;const pct=played>0?Math.round(w/played*100)+'%':'—';
+      return `<tr class="${i%2?'alt':''}">
+        <td class="c">${rk(i)}</td>
+        <td class="nm">${tc(name)}</td>
+        <td class="c">${col(w,'var(--b2)')}</td>
+        <td class="c">${col(f,'var(--t3)')}</td>
+        <td class="c">${col(sf,'var(--t3)')}</td>
+        <td class="c">${col(qf,'var(--t3)')}</td>
+        <td class="c" style="font-family:var(--fc);font-size:13px;color:${played>0?'var(--b3)':'var(--t4)'}">${pct}</td>
+        <td class="c" style="font-family:var(--fc);font-size:15px;font-weight:700;color:var(--b3)">${mw||'—'}</td>
+        <td class="c" style="font-family:var(--fc);font-size:15px;font-weight:800;color:var(--b2)">${tot||'—'}</td>
+      </tr>`;
+    }).join('')}</tbody>`;
+}
+
+/* Simple wins table */
+function winsTable(id, rows, col='Match Wins', color='var(--b2)') {
+  const max = rows.length ? rows[0][1] : 1;
+  document.getElementById(id).innerHTML = `
+    <thead><tr><th class="c" style="width:56px">Rank</th><th>Player</th><th class="r">${col}</th></tr></thead>
+    <tbody>${rows.map(([n,v],i)=>`
+      <tr class="${i%2?'alt':''}">
+        <td class="c">${rk(i)}</td>
+        <td class="${v>0?'nm':'zero'}">${tc(n)}</td>
+        ${barCell(v,max,color,String(v))}
+      </tr>`).join('')}</tbody>`;
+}
+
+const CH_DATES = ['28 May 2026', '1 Jun 2026'];
+function challengeTable() {
+  const done = CH.map((t,i)=>{
+    const f = t.rounds[t.rounds.length-1].m[0];
+    const w = f.sa > f.sb ? f.a : f.b;
+    return `<tr class="${i%2?'alt':''}">
+      <td class="c" style="color:var(--t2)">${i+1}</td>
+      <td class="nm">${tc(t.name)}</td>
+      <td style="color:var(--b2);font-weight:700">${tc(w)}</td>
+      <td class="c" style="color:var(--t2);font-size:12px;font-family:var(--fc)">${CH_DATES[i]||'—'}</td>
+    </tr>`;
+  }).join('');
+  const todo = Array.from({length:8},(_,i)=>`<tr class="${(i+CH.length)%2?'alt':''}">
+    <td class="c" style="color:var(--t2)">${i+3}</td>
+    <td class="nm" style="color:var(--t2)">SAMURAI CHALLENGE 0${i+3}</td>
+    <td style="color:var(--t3)">—</td>
+    <td class="c" style="color:var(--t3)">—</td>
+  </tr>`).join('');
+  document.getElementById('t-challenge').innerHTML=`
+    <thead><tr>
+      <th class="c" style="width:50px">#</th>
+      <th>Tournament</th>
+      <th>Winner</th>
+      <th class="c">Date</th>
+    </tr></thead>
+    <tbody>${done}${todo}</tbody>`;
+}
+
+/* ═══════════════════════════════════════
+   HERO TEXT MAP
+═══════════════════════════════════════ */
+const HEROES = {
+  world:    'RANKING',
+  points:   'POINTS RANKING',
+  protour:  'PRO TOUR',
+  wseries:  'WORLD SERIES',
+  premier:  'PREMIER LEAGUE',
+  euro:     'EUROPEAN TOUR',
+  pc:       'PLAYERS CHAMPIONSHIP',
+  challenge:'CHALLENGE',
+};
+
+function show(name) {
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+name).classList.add('on');
+  document.querySelectorAll('.nb').forEach(b=>{
+    b.classList.toggle('active', b.getAttribute('onclick').includes("'"+name+"'"));
+  });
+  document.getElementById('ht').textContent = HEROES[name]||'RANKING';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+prizeTable('t-world',   worldRanking,  'Prize Money',                 'var(--b2)');
+pointsTable('t-points');
+prizeTable('t-protour', proTourRanking,'Prize Money',                 'var(--b2)');
+// World Series: no data yet
+document.getElementById('t-wseries').innerHTML=`<tbody><tr><td><div class="empty"><div class="empty-t">NO RESULTS YET</div><div class="empty-s">World Series events have not been played yet</div></div></td></tr></tbody>`;
+// Premier League: no bracket data yet
+document.getElementById('t-premier').innerHTML=`<tbody><tr><td><div class="empty"><div class="empty-t">NO DATA YET</div><div class="empty-s">Premier League night results will appear once brackets are added</div></div></td></tr></tbody>`;
+prizeTable('t-euro',    etPrize,       'Prize Money',       'var(--b3)');
+prizeTable('t-pc',      pcPrize,       'Prize Money',       'var(--b2)');
+challengeTable();
+winsTable('t-localmw', LOCAL_MW, 'Match Wins', 'var(--b2)');
+winsTable('t-pdcmw',   MATCH_WINS, 'Match Wins', 'var(--b2)');
+
+// Mouse/touch drag scroll for nav bar
+const nav = document.getElementById('main-nav');
+let isDown = false, startX, scrollLeft;
+nav.addEventListener('mousedown', e => {
+  isDown = true; nav.style.cursor = 'grabbing';
+  startX = e.pageX - nav.offsetLeft;
+  scrollLeft = nav.scrollLeft;
+});
+nav.addEventListener('mouseleave', () => { isDown = false; nav.style.cursor = ''; });
+nav.addEventListener('mouseup',    () => { isDown = false; nav.style.cursor = ''; });
+nav.addEventListener('mousemove',  e => {
+  if (!isDown) return;
+  e.preventDefault();
+  nav.scrollLeft = scrollLeft - (e.pageX - nav.offsetLeft - startX) * 1.5;
+});
+</script>
+</body>
+</html>
